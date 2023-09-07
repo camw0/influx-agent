@@ -1,0 +1,29 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - "dev"
+  pull_request:
+    branches:
+      - "dev"
+
+jobs:
+  eslint:
+    name: Eslint
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Eslint
+        run: yarn lint#

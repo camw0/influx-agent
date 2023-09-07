@@ -7,7 +7,8 @@
   "author": "Cameron White <@cmrxnn>",
   "private": false,
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "lint": "eslint ./src/**/*.js --ext .js"
   },
   "dependencies": {
     "colors": "^1.4.0",
