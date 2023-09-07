@@ -1,20 +1,22 @@
 const fs = require('fs');
+const os = require('os');
+const sys = require('systeminformation');
 
 class Monitor {
-    constructor() {
-
-    }
-
-    run () {
+    async run () {
         var data = [];
-
-        const cpuUsage = this.pollCpuUsage();
         
         data.push({
-            'cpuUsage': cpuUsage
+            'time': new Date().toLocaleTimeString(),
+            'systemLoad': (await sys.currentLoad()),
+            'cpuUsage': await this.pollCpu(),
+            'cpuInfo': await this.pollCpuInfo(),
+            'memoryUsage': await this.pollMemory(),
+            'diskUsage': (await sys.fsSize()),
+            'networkUsage': (await sys.networkStats()),
         });
 
-        return this.handleWrite(JSON.stringify(data));
+        this.handleWrite(JSON.stringify(data));
     }
 
     handleWrite (data) {
@@ -27,8 +29,31 @@ class Monitor {
         console.log(`Data write sequence complete (${new Date().toLocaleTimeString()})`);
     }
 
-    pollCpuUsage () {
-        return (Math.random() * 100).toFixed(2);
+    async pollCpu () {
+        return 50;
+    }
+
+    async pollCpuInfo () {
+        return {
+            'data': (await sys.cpu()),
+            'temperature': (await sys.cpuTemperature())
+        }
+    }
+
+    async pollMemory () {
+        const memory = (await sys.mem());
+    
+        return {
+            'total': memory.total,
+            'used': memory.used,
+            'free': memory.free,
+            'percentageUsed': parseFloat(((memory.used / memory.total) * 100).toFixed(2)),
+            'swap': {
+                'total': memory.swaptotal,
+                'used': memory.swapused,
+                'free': memory.swapfree
+            }
+        };
     }
 }
 

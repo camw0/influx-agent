@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Monitor = require('./monitor');
 const Preflight = require('./preflight');
 const ServerInstance = require('./server');
@@ -13,15 +12,8 @@ async function main () {
     setInterval(() => {
         Monitor.run()
 
-        fs.readFile(__dirname + '/../data.json', 'utf-8', (error, data) => {
-            if (error) console.error(error);
-
-            console.log(data);
-            ServerInstance.serveData(data);
-        })
-        
-    }, 1000);
+        ServerInstance.serveData()
+    }, 2000);
 }
-
 
 main();

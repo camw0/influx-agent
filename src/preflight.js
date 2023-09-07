@@ -38,7 +38,9 @@ class Preflight {
     }
 
     async verifySystem () {
-        //
+        if (process.platform != 'linux') {
+            console.error('This program WILL NOT WORK on non-Linux based systems. Please install a Linux OS before using Influx.');
+        }
     }
 
     async verifyRemoteConnection () {

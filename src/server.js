@@ -1,4 +1,4 @@
-const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const { webserver } = require('../settings.json');
 
@@ -8,10 +8,9 @@ class ServerInstance {
         this.port = webserver.port || 3000;
     }
 
-    serveData (data) {
+    serveData () {
         this.app.get('/', (_request, response) => {
-            response.setHeader('Content-Type', 'application/json');
-            response.json(data);
+            response.sendFile(path.resolve(__dirname + '/../data.json'));
         })
     }
 
