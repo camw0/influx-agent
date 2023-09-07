@@ -1,0 +1,44 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\conta\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add express-js
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\conta\AppData\Local\Microsoft\WindowsApps;C:\Users\conta\.dotnet\tools;C:\Users\conta\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\conta\AppData\Local\Programs\Microsoft VS Code Insiders\bin;C:\php;C:\Users\conta\AppData\Local\ComposerSetup\bin;C:\Users\conta\AppData\Roaming\Composer\vendor\bin;C:\Users\conta\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.20.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/express-js: Not found
+      at Request.params.callback [as _callback] (C:\Users\conta\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at Request.self.callback (C:\Users\conta\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (C:\Users\conta\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (C:\Users\conta\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "influx-agent",
+    "version": "1.0.0",
+    "description": "The monitoring agent for Influx Panel.",
+    "main": "src/index.js",
+    "repository": "https://github.com/cmrxnn/influx-agent",
+    "author": "Cameron White <@cmrxnn>",
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

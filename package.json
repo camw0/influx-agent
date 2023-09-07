@@ -1,0 +1,13 @@
+{
+  "name": "influx-agent",
+  "version": "1.0.0",
+  "description": "The monitoring agent for Influx Panel.",
+  "main": "src/index.js",
+  "repository": "https://github.com/cmrxnn/influx-agent",
+  "author": "Cameron White <@cmrxnn>",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "ping": "^0.4.4"
+  }
+}

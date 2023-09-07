@@ -1,0 +1,7 @@
+{
+    "skip_preflight": true,
+    "webserver": {
+        "port": 3000
+    },
+    "remote": "http://localhost:8000"
+}
