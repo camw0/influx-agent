@@ -1,6 +1,7 @@
 const http = require('ping');
 const constants = require('./constants');
 const settings = require('../settings.json');
+const { warn, success, error } = require('./logger');
 
 class Preflight {
     constructor() {
@@ -10,36 +11,36 @@ class Preflight {
     }
 
     async runChecks () {
-        console.log('Running system integrity checks, please wait...');
+        warn('running system integrity checks');
 
         if (this.s.skip_preflight) {
-            console.warn('Preflight checks skipped (BE CAREFUL!)');
+            warn('preflight checks skipped (!)');
         } else {
             await this.verifySettings();
             await this.verifySystem();
             await this.verifyRemoteConnection();
         }
 
-        console.log('System checks carried out successfully');
+        success('System checks carried out successfully');
     }
 
     async verifySettings () {
         if (!this.s) {
-            throw new Error('The settings.json file does not exist.');
+            error('The settings.json file does not exist.');
         }
 
         if (!this.s.webserver) {
-            throw new Error('You do not have a webserver configuration block in the settings.json file.');
+            error('You do not have a webserver configuration block in the settings.json file.');
         }
 
         if (!this.s.webserver.port) {
-            console.warn(`You do not have a webserver port selected, so ${this.c.NAME} has defaulted to ${this.c.PORT}.`);
+            warn(`You do not have a webserver port selected, so ${this.c.NAME} has defaulted to ${this.c.PORT}.`);
         }
     }
 
     async verifySystem () {
         if (process.platform != 'linux') {
-            console.error('This program WILL NOT WORK on non-Linux based systems. Please install a Linux OS before using Influx.');
+            error('This program WILL NOT WORK on non-Linux based systems. Please install a Linux OS before using Influx.');
         }
     }
 
@@ -47,14 +48,14 @@ class Preflight {
         let url = this.c.REMOTE;
 
         if (!this.s.remote) {
-            console.warn(`You do not have a remote set up in the settings.json file, so ${this.c.NAME} has defaulted to ${this.c.REMOTE}.`);
+            warn(`You do not have a remote set up in the settings.json file, so ${this.c.NAME} has defaulted to ${this.c.REMOTE}.`);
         } else {
             url = this.s.remote;
         }
 
         http.sys.probe(url, async (active) => {
             if (!active) {
-                throw new Error('The Panel is not active to receive data.');
+                error('The Panel is not active to receive data.');
             }
         });        
     }

@@ -1,5 +1,6 @@
+const { success, info, error } = require('./logger');
 const fs = require('fs');
-const os = require('os');
+const { v4 } = require('uuid');
 const sys = require('systeminformation');
 
 class Monitor {
@@ -8,10 +9,11 @@ class Monitor {
         
         data.push({
             'time': new Date().toLocaleTimeString(),
+            'uuid': v4(),
             'systemLoad': (await sys.currentLoad()),
-            'cpuUsage': await this.pollCpu(),
-            'cpuInfo': await this.pollCpuInfo(),
-            'memoryUsage': await this.pollMemory(),
+            'cpuUsage': 50,
+            'cpuInfo': { 'data': (await sys.cpu()), 'temperature': (await sys.cpuTemperature()) },
+            'memoryUsage': (await sys.mem()),
             'diskUsage': (await sys.fsSize()),
             'networkUsage': (await sys.networkStats()),
         });
@@ -20,40 +22,16 @@ class Monitor {
     }
 
     handleWrite (data) {
+        info('starting write to data.json');
         fs.writeFileSync(__dirname + '/../' + 'data.json', data, 'utf-8', function (err) {
             if (err) {
-                console.error('An error occured writing to the data JSON file: ' + err);
+                error('an error occured writing to the data.json file: ' + err);
+            } else {
+                success('data copied to data.json successfully')
             }
         });
 
-        console.log(`Data write sequence complete (${new Date().toLocaleTimeString()})`);
-    }
-
-    async pollCpu () {
-        return 50;
-    }
-
-    async pollCpuInfo () {
-        return {
-            'data': (await sys.cpu()),
-            'temperature': (await sys.cpuTemperature())
-        }
-    }
-
-    async pollMemory () {
-        const memory = (await sys.mem());
-    
-        return {
-            'total': memory.total,
-            'used': memory.used,
-            'free': memory.free,
-            'percentageUsed': parseFloat(((memory.used / memory.total) * 100).toFixed(2)),
-            'swap': {
-                'total': memory.swaptotal,
-                'used': memory.swapused,
-                'free': memory.swapfree
-            }
-        };
+        success(`data written to data.json successfully`);
     }
 }
 

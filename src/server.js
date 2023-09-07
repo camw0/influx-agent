@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const { webserver } = require('../settings.json');
+const { success, info, error } = require('./logger');
 
 class ServerInstance {
     constructor() {
@@ -8,25 +9,25 @@ class ServerInstance {
         this.port = webserver.port || 3000;
     }
 
-    serveData () {
-        this.app.get('/', (_request, response) => {
-            response.sendFile(path.resolve(__dirname + '/../data.json'));
+    async serveData () {
+        this.app.get('/', (request, response) => {
+            info(`request received from ${request.ip}`)
+            try {
+                response.sendFile(path.resolve(__dirname + '/../data.json'));
+            } catch (e) {
+                error('unable to handle incoming request: ' + e);
+            }
         })
     }
 
     start () {
         try {
             this.app.listen(this.port, () => {
-                console.log(`Webserver is listening for connections (${this.port})`)
+                success(`server is listening for connections (port ${this.port})`)
             })
         } catch (error) {
-            throw new Error('Unable to start webserver: ' + error.message);
+            error('unable to start webserver: ' + error.message);
         }
-
-        this.app.use((req, res, next) => {
-            res.set('Cache-Control', 'no-store')
-            next()
-          })
     }
 }
 

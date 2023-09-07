@@ -1,19 +1,25 @@
+const { info, warn } = require('./logger');
 const Monitor = require('./monitor');
 const Preflight = require('./preflight');
 const ServerInstance = require('./server');
 
 async function main () {
+    warn('system is starting boot process, please wait');
+
     await Preflight.runChecks().then(() => {
         ServerInstance.start();
     });
 
-    console.log('All services are ready to send/receive data to Panel');
+    info('all services are online and ready to handle requests');
 
-    setInterval(() => {
-        Monitor.run()
+    setInterval(async () => {
+        info('starting resource poll');
+        await Monitor.run();
 
-        ServerInstance.serveData()
-    }, 2000);
+        await ServerInstance.serveData();
+
+        info('waiting until next refresh');
+    }, 5000);
 }
 
 main();
