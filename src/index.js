@@ -6,21 +6,21 @@ const ServerInstance = require('./server')
 console.clear()
 
 async function main () {
-  warn('system is starting boot process, please wait')
+  warn('CORE | system is starting boot process, please wait')
 
   await Preflight.runChecks().then(() => {
     ServerInstance.start()
   })
 
-  info('all services are online and ready to handle requests')
+  info('CORE | all services are online and ready to handle requests')
 
   setInterval(async () => {
-    info('starting resource poll')
+    info('CORE | starting resource poll')
     await Monitor.run()
 
     await ServerInstance.serveData()
 
-    info('waiting until next refresh')
+    info('CORE | waiting until next refresh')
   }, 5000)
 }
 

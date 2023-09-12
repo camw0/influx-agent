@@ -22,17 +22,17 @@ class Monitor {
   }
 
   handleWrite (data) {
-    info('starting write to data.json')
+    info('MNTR | starting write to data.json')
     // eslint-disable-next-line n/no-path-concat
     fs.writeFileSync(__dirname + '/../' + 'data.json', data, 'utf-8', function (err) {
       if (err) {
-        error('an error occured writing to the data.json file: ' + err)
+        error('MNTR | an error occured writing to the data.json file: ' + err)
       } else {
-        success('data copied to data.json successfully')
+        success('MNTR | data copied to data.json successfully')
       }
     })
 
-    success('data written to data.json successfully')
+    success('MNTR | data written to data.json successfully')
   }
 }
 

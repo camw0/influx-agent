@@ -1,33 +1,36 @@
 const path = require('path')
 const express = require('express')
 const { webserver } = require('../settings.json')
-const { success, info, error } = require('./logger')
+const { success, warn, error } = require('./logger')
 
 class ServerInstance {
   constructor () {
     this.app = express()
-    this.port = webserver.port || 3000
+    this.port = webserver.port || 25565
   }
 
   async serveData () {
     this.app.get('/', (request, response) => {
-      info(`request received from ${request.ip}`)
+      const start = Date.now()
+      warn(`WSRV | request received from ${request.ip}`)
       try {
         // eslint-disable-next-line n/no-path-concat
         response.sendFile(path.resolve(__dirname + '/../data.json'))
       } catch (e) {
-        error('unable to handle incoming request: ' + e)
+        error('WSRV | unable to handle incoming request: ' + e)
       }
+
+      success(`WSRV | request processed in ${Date.now() - start}ms`)
     })
   }
 
   start () {
     try {
       this.app.listen(this.port, () => {
-        success(`server is listening for connections (port ${this.port})`)
+        success(`WSRV | listening for connections (port ${this.port})`)
       })
     } catch (error) {
-      error('unable to start webserver: ' + error.message)
+      error('WSVR | unable to start webserver: ' + error.message)
     }
   }
 }
