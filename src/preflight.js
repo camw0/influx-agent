@@ -1,6 +1,7 @@
+const fs = require('fs')
 const http = require('ping')
 const constants = require('./constants')
-const settings = require('../settings.json')
+const settings = require(constants.SETTINGS_PATH)
 const { warn, success, error } = require('./logger')
 
 class Preflight {
@@ -19,6 +20,7 @@ class Preflight {
       await this.verifySettings()
       await this.verifySystem()
       await this.verifyRemoteConnection()
+      await this.regenerateDataFile()
     }
 
     success('PFLT | system checks carried out successfully')
@@ -60,6 +62,14 @@ class Preflight {
         success('PFLT | established connection with Panel')
       }
     })
+  }
+
+  async regenerateDataFile () {
+    try {
+      fs.closeSync(fs.openSync(constants.DATA_PATH, 'w'))
+    } catch (err) {
+      error('PFLT | Unable to create data file in ' + constants.DATA_PATH + ': ' + err)
+    }
   }
 }
 

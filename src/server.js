@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const { webserver } = require('../settings.json')
 const { success, warn, error } = require('./logger')
+const { DATA_PATH } = require('./constants')
 
 class ServerInstance {
   constructor () {
@@ -15,7 +16,7 @@ class ServerInstance {
       warn(`WSRV | request received from ${request.ip}`)
       try {
         // eslint-disable-next-line n/no-path-concat
-        response.sendFile(path.resolve(__dirname + '/../data.json'))
+        response.sendFile(path.resolve(DATA_PATH))
       } catch (e) {
         error('WSRV | unable to handle incoming request: ' + e)
       }

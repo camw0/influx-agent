@@ -1,5 +1,6 @@
 const { success, info, error } = require('./logger')
 const fs = require('fs')
+const { DATA_PATH } = require('./constants')
 const { v4 } = require('uuid')
 const sys = require('systeminformation')
 
@@ -24,7 +25,7 @@ class Monitor {
   handleWrite (data) {
     info('MNTR | starting write to data.json')
     // eslint-disable-next-line n/no-path-concat
-    fs.writeFileSync(__dirname + '/../' + 'data.json', data, 'utf-8', function (err) {
+    fs.writeFileSync(DATA_PATH, data, 'utf-8', function (err) {
       if (err) {
         error('MNTR | an error occured writing to the data.json file: ' + err)
       } else {
