@@ -1,8 +1,8 @@
 const path = require('path')
 const express = require('express')
-const { webserver } = require('../settings.json')
 const { success, warn, error } = require('./logger')
-const { DATA_PATH } = require('./constants')
+const { DATA_PATH, SETTINGS_PATH } = require('./constants')
+const { webserver } = require(SETTINGS_PATH)
 
 class ServerInstance {
   constructor () {
