@@ -1,3 +1,4 @@
+const cors = require('cors')
 const path = require('path')
 const express = require('express')
 const { success, warn, error } = require('./logger')
@@ -26,6 +27,8 @@ class ServerInstance {
   }
 
   start () {
+    this.app.use(cors())
+
     try {
       this.app.listen(this.port, () => {
         success(`WSRV | listening for connections (port ${this.port})`)
