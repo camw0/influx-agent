@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "start": "node src/index.js",
-    "build": "pkg src/index.js -o agent",
+    "build": "pkg src/index.js -o influx-agent",
     "lint": "eslint ./src/**/*.js --ext .js"
   },
   "dependencies": {
