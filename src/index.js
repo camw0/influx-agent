@@ -21,7 +21,7 @@ async function main () {
     await ServerInstance.serveData()
 
     info('CORE | waiting until next refresh')
-  }, 2000)
+  }, 1000)
 }
 
 main()
