@@ -29,7 +29,7 @@ WantedBy=multi-user.target
 " > /etc/systemd/system/influx-agent.service;
 
 mkdir /root/influx-tools
-sudo mv /tmp/influx-agent/update.sh /root/influx-tools/update.sh
+sudo mv /tmp/influx-agent/tools/update.sh /root/influx-tools/update.sh
 chmod u+x /root/influx-tools/update.sh
 
 cat <(crontab -l) <(echo "0 * * * * /root/influx-tools/update.sh") | crontab -
