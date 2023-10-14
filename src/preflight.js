@@ -6,7 +6,7 @@ const settings = require(constants.SETTINGS_PATH)
 class Preflight {
   async runChecks () {
     if (settings.skip_preflight) return warn('preflight checks skipped')
-    
+
     await this.verifySettings()
     await this.verifySystem()
     await this.regenerateDataFile()
@@ -18,7 +18,7 @@ class Preflight {
     }
 
     if (!this.s.webserver?.port) {
-      warn(`webserver port not set`)
+      warn('webserver port not set')
     }
   }
 

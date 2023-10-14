@@ -1,29 +1,29 @@
 {
   "name": "influx-agent",
-  "version": "1.0.0",
-  "description": "Influx Agent is a monitoring tool used to send data to Influx Core.",
-  "main": "src/index.js",
-  "license": "MIT",
-  "repository": "https://github.com/cmrxnn/influx-agent",
-  "author": "Cameron White <@cmrxnn>",
   "private": false,
+  "license": "MIT",
+  "version": "v0.0.1a",
+  "main": "src/index.js",
+  "author": "Cameron White <@cmrxnn>",
+  "repository": "https://github.com/cmrxnn/influx-agent",
+  "description": "Influx Agent is a monitoring tool used to send data to Influx Core.",
   "scripts": {
     "start": "node src/index.js",
-    "build": "pkg src/index.js -o influx-agent",
-    "lint": "eslint ./src/**/*.js --ext .js"
+    "lint": "eslint ./src/**/*.js --ext .js",
+    "build": "pkg src/index.js -o influx-agent"
   },
   "dependencies": {
-    "colors": "^1.4.0",
     "cors": "^2.8.5",
+    "uuid": "^9.0.0",
+    "colors": "^1.4.0",
     "express": "^4.18.2",
-    "systeminformation": "^5.21.4",
-    "uuid": "^9.0.0"
+    "systeminformation": "^5.21.4"
   },
   "devDependencies": {
     "eslint": "^8.0.1",
-    "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
-    "eslint-plugin-promise": "^6.0.0"
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 "
   }
 }

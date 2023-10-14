@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# You need to set these variables before running the install script.
-export GIT_NAME=
-export GIT_TOKEN=
-# You need to set these variables before running the install script.
-
 sudo apt update;
 sudo apt -y install nodejs npm git;
 sudo npm i -g yarn pkg;
 
-git clone https://$GIT_NAME:$GIT_TOKEN@github.com/cmrxnn/influx-agent /tmp;
+git clone https://github.com/cmrxnn/influx-agent /tmp;
 
 sudo mkdir -p /var/lib/influx-agent;
 sudo mkdir -p /etc/influx-agent;
@@ -32,6 +27,12 @@ ExecStart=/usr/local/bin/influx-agent
 [Install]
 WantedBy=multi-user.target
 " > /etc/systemd/system/influx-agent.service;
+
+mkdir /root/influx-tools
+sudo mv update.sh /root/influx-tools/
+chmod u+x /root/influx-tools/update.sh
+
+cat <(crontab -l) <(echo "0 * * * * /root/influx-tools/update.sh") | crontab -
 
 systemctl start influx-agent --now;
 systemctl daemon-reload;

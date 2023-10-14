@@ -17,7 +17,6 @@ class ServerInstance {
       } catch (e) {
         error('unable to handle incoming request: ' + e.message)
       }
-
     })
   }
 
@@ -25,7 +24,7 @@ class ServerInstance {
     this.app.use(cors())
 
     try {
-      this.app.listen(require(SETTINGS_PATH).webserver.port || 3000);
+      this.app.listen(require(SETTINGS_PATH).webserver.port || 3000)
     } catch (e) {
       error('unable to start webserver: ' + e.message)
     }
