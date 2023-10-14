@@ -9,15 +9,16 @@ sudo apt update;
 sudo apt -y install nodejs npm git;
 sudo npm i -g yarn pkg;
 
-git clone https://$GIT_NAME:$GIT_TOKEN@github.com/cmrxnn/influx-agent;
+git clone https://$GIT_NAME:$GIT_TOKEN@github.com/cmrxnn/influx-agent /tmp;
 
-cd influx-agent;
-yarn install;
+sudo mkdir -p /var/lib/influx-agent;
+sudo mkdir -p /etc/influx-agent;
+
+cd /tmp/influx-agent;
+yarn;
 yarn build;
 
 sudo mv influx-agent /usr/local/bin;
-sudo mkdir -p /var/lib/influx-agent;
-sudo mkdir -p /etc/influx-agent;
 sudo cp -R settings.json.example /etc/influx-agent/settings.json;
 
 sudo echo "[Unit]
