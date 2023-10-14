@@ -23,7 +23,7 @@ jobs:
           cache: "yarn"
       
       - name: Add pkg
-        run: sudo apt -y install pkg
+        run: npm i -g pkg
 
       - name: Install Dependencies
         run: yarn install
