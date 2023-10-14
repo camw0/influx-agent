@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "dev"
+  pull_request:
+    branches:
+      - "dev"
+
+jobs:
+  eslint:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      
+      - name: Add pkg
+        run: sudo apt -y install pkg
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run Build
+        run: yarn build
