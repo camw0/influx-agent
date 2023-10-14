@@ -4,12 +4,12 @@ sudo apt update;
 sudo apt -y install nodejs npm git;
 sudo npm i -g yarn pkg;
 
-git clone https://github.com/cmrxnn/influx-agent /tmp;
+git clone https://github.com/cmrxnn/influx-agent /tmp/influx-agent;
 
 sudo mkdir -p /var/lib/influx-agent;
 sudo mkdir -p /etc/influx-agent;
 
-cd /tmp/influx-agent;
+cd /tmp/influx-agent/;
 yarn;
 yarn build;
 
@@ -29,14 +29,11 @@ WantedBy=multi-user.target
 " > /etc/systemd/system/influx-agent.service;
 
 mkdir /root/influx-tools
-sudo mv update.sh /root/influx-tools/
+sudo mv /tmp/influx-agent/update.sh /root/influx-tools/update.sh
 chmod u+x /root/influx-tools/update.sh
 
 cat <(crontab -l) <(echo "0 * * * * /root/influx-tools/update.sh") | crontab -
 
-systemctl start influx-agent --now;
-systemctl daemon-reload;
-
-sudo rm -r /root/influx-agent
+systemctl enable --now influx-agent;
 
 exit 0;

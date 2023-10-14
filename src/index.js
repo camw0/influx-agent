@@ -1,10 +1,10 @@
 const Monitor = require('./monitor')
 const { info } = require('./logger')
+const Preflight = require('./preflight')
 const ServerInstance = require('./server')
-const { runChecks } = require('./preflight')
 
 async function boot () {
-  await runChecks().then(() => ServerInstance.start())
+  await Preflight.runChecks().then(() => ServerInstance.start())
 
   info('all services are online and ready to handle requests')
 

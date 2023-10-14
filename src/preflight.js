@@ -17,7 +17,7 @@ class Preflight {
       error('settings file does not exist')
     }
 
-    if (!this.s.webserver?.port) {
+    if (!settings.webserver?.port) {
       warn('webserver port not set')
     }
   }
