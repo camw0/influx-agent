@@ -1,7 +1,7 @@
 {
-    "skip_preflight": true,
+    "skip_preflight": false,
     "webserver": {
         "port": 3000
     },
-    "remote": "http://localhost:8000"
+    "remote": "https://influx.cameronwhite.co.uk"
 }

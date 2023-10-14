@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Influx Agent is a monitoring tool used to send data to Influx Core.",
   "main": "src/index.js",
+  "license": "MIT",
   "repository": "https://github.com/cmrxnn/influx-agent",
   "author": "Cameron White <@cmrxnn>",
   "private": false,
@@ -15,12 +16,9 @@
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "node-os-utils": "^1.3.7",
-    "ping": "^0.4.4",
     "systeminformation": "^5.21.4",
     "uuid": "^9.0.0"
   },
-  "license": "MIT",
   "devDependencies": {
     "eslint": "^8.0.1",
     "eslint-config-standard": "^17.1.0",

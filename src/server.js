@@ -1,28 +1,23 @@
 const cors = require('cors')
 const path = require('path')
 const express = require('express')
-const { success, warn, error } = require('./logger')
+const { error } = require('./logger')
 const { DATA_PATH, SETTINGS_PATH } = require('./constants')
-const { webserver } = require(SETTINGS_PATH)
 
 class ServerInstance {
   constructor () {
     this.app = express()
-    this.port = webserver.port || 25565
   }
 
   async serveData () {
-    this.app.get('/', (request, response) => {
-      const start = Date.now()
-      warn(`WSRV | request received from ${request.ip}`)
+    this.app.get('/', (_request, response) => {
       try {
         // eslint-disable-next-line n/no-path-concat
         response.sendFile(path.resolve(DATA_PATH))
       } catch (e) {
-        error('WSRV | unable to handle incoming request: ' + e)
+        error('unable to handle incoming request: ' + e.message)
       }
 
-      success(`WSRV | request processed in ${Date.now() - start}ms`)
     })
   }
 
@@ -30,11 +25,9 @@ class ServerInstance {
     this.app.use(cors())
 
     try {
-      this.app.listen(this.port, () => {
-        success(`WSRV | listening for connections (port ${this.port})`)
-      })
-    } catch (error) {
-      error('WSVR | unable to start webserver: ' + error.message)
+      this.app.listen(require(SETTINGS_PATH).webserver.port || 3000);
+    } catch (e) {
+      error('unable to start webserver: ' + e.message)
     }
   }
 }

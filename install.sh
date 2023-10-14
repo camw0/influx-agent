@@ -6,7 +6,7 @@ export GIT_TOKEN=
 # You need to set these variables before running the install script.
 
 sudo apt update;
-sudo apt -y install nodejs npm;
+sudo apt -y install nodejs npm git;
 sudo npm i -g yarn pkg;
 
 git clone https://$GIT_NAME:$GIT_TOKEN@github.com/cmrxnn/influx-agent;
@@ -33,5 +33,6 @@ WantedBy=multi-user.target
 " > /etc/systemd/system/influx-agent.service;
 
 systemctl start influx-agent --now;
+systemctl daemon-reload;
 
 exit 0;

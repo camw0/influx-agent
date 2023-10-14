@@ -13,7 +13,8 @@ const warn = (message) => {
 }
 
 const error = (message) => {
-  return console.info(`${colors.bold.gray(new Date().toLocaleDateString())} ${colors.gray(new Date().toLocaleTimeString())} ${colors.red('!')} ${colors.bold.red('  FAIL  ')} ${colors.red('!')} ${message}`)
+  console.info(`${colors.bold.gray(new Date().toLocaleDateString())} ${colors.gray(new Date().toLocaleTimeString())} ${colors.red('!')} ${colors.bold.red('  FAIL  ')} ${colors.red('!')} ${message}`)
+  process.exit();
 }
 
 module.exports = { success, info, warn, error }
