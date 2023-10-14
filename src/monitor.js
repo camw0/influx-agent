@@ -2,7 +2,7 @@ const fs = require('fs')
 const { v4 } = require('uuid')
 const { error } = require('./logger')
 const sys = require('systeminformation')
-const { DATA_PATH } = require('./constants')
+const { DATA_PATH, VERSION } = require('./constants')
 
 class Monitor {
   async run () {
@@ -10,6 +10,7 @@ class Monitor {
 
     data.push({
       time: new Date().toLocaleTimeString(),
+      version: VERSION,
       uuid: v4(),
       systemLoad: (await sys.currentLoad()),
       cpuInfo: { data: (await sys.cpu()), temperature: (await sys.cpuTemperature()) },

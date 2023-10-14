@@ -35,4 +35,6 @@ WantedBy=multi-user.target
 systemctl start influx-agent --now;
 systemctl daemon-reload;
 
+sudo rm -r /root/influx-agent
+
 exit 0;
