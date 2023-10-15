@@ -1,4 +1,4 @@
-name: Build
+name: Release
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - "v*"
 
 jobs:
-  eslint:
-    name: Build
+  release:
+    name: Release
     runs-on: ubuntu-22.04
     steps:
       - name: Code Checkout
@@ -19,7 +19,7 @@ jobs:
           node-version: 18
           cache: "yarn"
       
-      - name: Add pkg
+      - name: Add pkg and json
         run: npm i -g pkg json
 
       - name: Install Dependencies
@@ -60,3 +60,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: influx-agent
           asset_name: influx-agent
+          asset_content_type: application/octet-stream
