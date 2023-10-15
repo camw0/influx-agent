@@ -2,7 +2,7 @@
   "name": "influx-agent",
   "private": false,
   "license": "MIT",
-  "version": "v0.0.1a",
+  "version": "develop",
   "main": "src/index.js",
   "author": "Cameron White <@cmrxnn>",
   "repository": "https://github.com/cmrxnn/influx-agent",
