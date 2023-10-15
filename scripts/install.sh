@@ -3,7 +3,9 @@
 sudo apt update;
 sudo apt -y install curl;
 
-curl -Lo /usr/local/bin/influx-agent https://github.com/cmrxnn/influx-agent/releases/download/latest/influx-agent
+curl -L -o /usr/local/bin/influx-agent https://github.com/cmrxnn/influx-agent/releases/latest/download/influx-agent;
+
+sudo chmod u+x /usr/local/bin/influx-agent;
 
 sudo mkdir -p /etc/influx-agent;
 sudo mkdir -p /var/lib/influx-agent;
