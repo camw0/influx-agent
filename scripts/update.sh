@@ -1,13 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/cmrxnn/influx-agent /tmp;
-
-cd /tmp/influx-agent;
-yarn;
-yarn build;
-
-sudo mv influx-agent /usr/local/bin;
+curl -Lo /usr/local/bin/influx-agent https://github.com/cmrxnn/influx-agent/releases/download/latest/influx-agent;
 
 systemctl restart influx-agent --now;
-
-sudo rm -r /tmp/influx-agent;

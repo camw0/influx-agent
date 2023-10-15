@@ -1,20 +1,14 @@
 #!/bin/bash
 
 sudo apt update;
-sudo apt -y install nodejs npm git;
-sudo npm i -g yarn pkg;
+sudo apt -y install curl;
 
-git clone https://github.com/cmrxnn/influx-agent /tmp/influx-agent;
+curl -Lo /usr/local/bin/influx-agent https://github.com/cmrxnn/influx-agent/releases/download/latest/influx-agent
 
-sudo mkdir -p /var/lib/influx-agent;
 sudo mkdir -p /etc/influx-agent;
+sudo mkdir -p /var/lib/influx-agent;
 
-cd /tmp/influx-agent/;
-yarn;
-yarn build;
-
-sudo mv influx-agent /usr/local/bin;
-sudo cp -R settings.json.example /etc/influx-agent/settings.json;
+curl -Lo /etc/influx-agent/settings.json https://raw.githubusercontent.com/cmrxnn/influx-agent/dev/settings.json.example;
 
 sudo echo "[Unit]
 Description=InfluxAgent
@@ -29,7 +23,7 @@ WantedBy=multi-user.target
 " > /etc/systemd/system/influx-agent.service;
 
 mkdir /root/influx-tools
-sudo mv /tmp/influx-agent/tools/update.sh /root/influx-tools/update.sh
+curl -Lo /root/influx-tools/update.sh https://github.com/cmrxnn/influx-agent/blob/dev/scripts/update.sh;
 chmod u+x /root/influx-tools/update.sh
 
 cat <(crontab -l) <(echo "0 * * * * /root/influx-tools/update.sh") | crontab -
