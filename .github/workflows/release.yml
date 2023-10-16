@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "yarn"
+      
+      - name: Add pkg and json
+        run: npm i -g pkg json
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run Build
+        run: yarn build
+
+      - name: Create release branch and bump version
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          BRANCH=release/${REF:10}
+          git config --local user.email "ci@influx.cameronwhite.co.uk"
+          git config --local user.name "Influx CI"
+          git checkout -b $BRANCH
+          git push -u origin $BRANCH
+          json -I -f package.json -e "this.version='v${REF:11}'"
+          git add package.json
+          git commit -m "ci: create release"
+          git push
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          prerelease: ${{ contains(github.ref, 'rc') || contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+
+      - name: Upload release archive
+        id: upload-release-archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: influx-agent
+          asset_name: influx-agent
+          asset_content_type: application/octet-stream
