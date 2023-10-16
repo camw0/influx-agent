@@ -2,10 +2,10 @@ const cors = require('cors')
 const path = require('path')
 const express = require('express')
 const { error } = require('./logger')
-const { DATA_PATH, SETTINGS_PATH, REMOTE } = require('./constants')
+const { DATA_PATH, SETTINGS_PATH } = require('./constants')
 
 const corsConfiguration = {
-  origin: REMOTE,
+  origin: require(SETTINGS_PATH).remote,
   optionsSuccessStatus: 200
 }
 
