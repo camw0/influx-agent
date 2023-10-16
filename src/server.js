@@ -2,7 +2,12 @@ const cors = require('cors')
 const path = require('path')
 const express = require('express')
 const { error } = require('./logger')
-const { DATA_PATH, SETTINGS_PATH } = require('./constants')
+const { DATA_PATH, SETTINGS_PATH, REMOTE } = require('./constants')
+
+const corsConfiguration = {
+  origin: REMOTE,
+  optionsSuccessStatus: 200
+}
 
 class ServerInstance {
   constructor () {
@@ -21,7 +26,7 @@ class ServerInstance {
   }
 
   start () {
-    this.app.use(cors())
+    this.app.use(cors(corsConfiguration))
 
     try {
       this.app.listen(require(SETTINGS_PATH).webserver.port || 3000)
