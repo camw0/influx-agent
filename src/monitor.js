@@ -5,7 +5,7 @@ const sys = require('systeminformation')
 const { DATA_PATH, VERSION } = require('./constants')
 
 class Monitor {
-  async run () {
+  async collectData () {
     const data = []
 
     data.push({
@@ -30,4 +30,4 @@ class Monitor {
   }
 }
 
-module.exports = new Monitor()
+module.exports = Monitor

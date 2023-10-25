@@ -13,17 +13,17 @@
     "build": "pkg src/index.js -o influx-agent"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "uuid": "^9.0.0",
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "systeminformation": "^5.21.7"
+    "systeminformation": "^5.21.7",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "eslint": "^8.0.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-promise": "^6.0.0",
     "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 "
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0"
   }
 }
