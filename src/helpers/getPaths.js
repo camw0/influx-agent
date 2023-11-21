@@ -11,4 +11,4 @@ function getDataPath () {
     return `${process.platform === 'win32' ? WIN_PATH : LINUX_PATH}data.json`;
 }
 
-export { getSettingsPath, getDataPath };
+module.exports = { getSettingsPath, getDataPath };

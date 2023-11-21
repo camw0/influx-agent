@@ -15,4 +15,4 @@ async function execute (service) {
         });
 };
 
-export default execute;
+module.exports = execute;

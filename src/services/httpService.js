@@ -1,10 +1,10 @@
 'use strict';
 
 // import cors from 'cors';
-import path from 'path';
-import express from 'express';
-import execute from '../functions/execute.js';
-import MonitorService from './monitorService.js';
+const path = require('path');
+const express = require('express');
+const execute = require('../functions/execute.js');
+const MonitorService = require('./monitorService.js');
 
 class HttpService { /* */
     constructor() {
@@ -31,7 +31,7 @@ class HttpService { /* */
         }
 
         this.webserver.get('/', async (_req, res) => {      
-            await execute(MonitorService);
+            await new MonitorService().run();
 
             try {
                 res.sendFile(path.resolve('./data.json'));
@@ -53,4 +53,4 @@ class HttpService { /* */
     }
 };
 
-export default HttpService;
+module.exports = HttpService;

@@ -1,8 +1,8 @@
 'use strict';
 
-import fs from 'fs';
-import out from '../functions/out.js';
-import { getSettingsPath, getDataPath } from '../helpers/getPaths.js';
+const fs = require('fs');
+const out = require('../functions/out.js');
+const { getSettingsPath, getDataPath } = require('../helpers/getPaths.js');
 
 class PreflightService { /* */
     constructor() {
@@ -55,4 +55,4 @@ class PreflightService { /* */
     }
 }
 
-export default PreflightService;
+module.exports = PreflightService;
