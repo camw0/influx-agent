@@ -1,0 +1,101 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21.5"
+
+      - name: Build release binaries
+        env:
+          CGO_ENABLED: 0
+          REF: ${{ github.ref }}
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o influx_linux_amd64 main.go
+          chmod 755 dist/influx_linux_amd64
+          GOOS=linux GOARCH=arm64 go build -o influx_linux_arm64 main.go
+          chmod 755 dist/influx_linux_arm64
+          GOOS=windows GOARCH=amd64 go build -o influx_windows_amd64 main.go
+          chmod 755 dist/influx_windows_amd64
+          GOOS=windows GOARCH=arm64 go build -o influx_windows_arm64 main.go
+          chmod 755 dist/influx_windows_arm64
+
+      - name: Create checksum
+        run: |
+          SUM=`cd dist && sha256sum influx_linux_amd64`
+          SUM2=`cd dist && sha256sum influx_linux_arm64`
+          SUM3=`cd dist && sha256sum influx_windows_amd64`
+          SUM4=`cd dist && sha256sum influx_windows_arm64`
+          echo -e "$SUM\n$SUM2\n$SUM3\n$SUM4" > checksums.txt
+
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: true
+          prerelease: ${{ contains(github.ref, 'rc') || contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+
+      - name: Upload Linux amd64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/influx_linux_amd64
+          asset_name: influx_linux_amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux arm64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/influx_linux_arm64
+          asset_name: influx_linux_arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows amd64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/influx_windows_amd64
+          asset_name: influx_windows_amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows arm64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/influx_windows_arm64
+          asset_name: influx_windows_arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload checksum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./checksums.txt
+          asset_name: checksums.txt
+          asset_content_type: text/plain
