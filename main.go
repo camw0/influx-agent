@@ -13,26 +13,19 @@ import (
 	"github.com/shirou/gopsutil/net"
 )
 
-func getSSLCertPaths(certDirs ...string) (string, string) {
-	for _, certDir := range certDirs {
-		if _, err := os.Stat(certDir + "cert.pem"); err == nil {
-			return certDir + "cert.pem", certDir + "key.pem"
-		}
-	}
-	return "", ""
-}
-
-func startServer(addr string, router http.Handler, certPath, keyPath string) {
-	if certPath != "" && keyPath != "" {
-		log.Fatal(http.ListenAndServeTLS(addr, certPath, keyPath, router))
-	} else {
-		log.Fatal(http.ListenAndServe(addr, router))
-	}
-}
-
 func main() {
 	log.Println("starting webserver")
 	r := gin.Default()
+
+	configPath := "/etc/influx-agent/config.json"
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		configPath = "./config.json" // fallback to local config file on Windows
+	}
+
+	config, err := ReadConfig(configPath)
+	if err != nil {
+		log.Fatalf("error reading config file: %v\n", err)
+	}
 
 	r.GET("/", func(c *gin.Context) {
 		log.Println("serving request at root")
@@ -97,15 +90,13 @@ func main() {
 		c.JSON(http.StatusOK, response)
 	})
 
-	// Check if SSL files exist
-	sslCertPath, sslKeyPath := getSSLCertPaths("/etc/influx-agent/certs/", "./certs/")
+	sslCertPath, sslKeyPath := getSSLCertPaths(config.CertDir, "./certs/")
 	if sslCertPath == "" || sslKeyPath == "" {
 		log.Println("using http (ssl certs do not exist)")
 	} else {
 		log.Println("using https (certs found at path)")
 	}
 
-	// Start the server (HTTP or HTTPS)
 	startServer(":3000", r, sslCertPath, sslKeyPath)
 
 	log.Println("started - listening on port 3000 for requests")

@@ -1,4 +1,4 @@
-module github.com/cmrxnn/influx-agent/v2
+module github.com/cmrxnn/influx-agent
 
 go 1.21.5
 
