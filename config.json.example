@@ -1,0 +1,4 @@
+{
+	"cert_dir": "/etc/letsencrypt/live/example.tld/",
+	"remote_addr: "https://influx.cameronwhite.co.uk"
+}

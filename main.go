@@ -97,6 +97,8 @@ func main() {
 		log.Println("using https (certs found at path)")
 	}
 
+	SetupCORS(r, config.RemoteAddr)
+
 	startServer(":3000", r, sslCertPath, sslKeyPath)
 
 	log.Println("started - listening on port 3000 for requests")

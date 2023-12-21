@@ -9,6 +9,7 @@ import (
 type Config struct {
 	ServerAddr string `json:"server_addr"`
 	CertDir    string `json:"cert_dir"`
+	RemoteAddr string `json:"remote_addr"`
 	// Add other configuration fields as needed
 }
 
