@@ -9,7 +9,7 @@ import (
 func getSSLCertPaths(certDirs ...string) (string, string) {
 	for _, certDir := range certDirs {
 		certPath := certDir + "cert.pem"
-		keyPath := certDir + "key.pem"
+		keyPath := certDir + "privkey.pem"
 		if _, err := os.Stat(certPath); err == nil {
 			log.Printf("Found SSL certificate at %s\n", certPath)
 			return certPath, keyPath
