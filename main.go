@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,23 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 )
+
+func getSSLCertPaths(certDirs ...string) (string, string) {
+	for _, certDir := range certDirs {
+		if _, err := os.Stat(certDir + "cert.pem"); err == nil {
+			return certDir + "cert.pem", certDir + "key.pem"
+		}
+	}
+	return "", ""
+}
+
+func startServer(addr string, router http.Handler, certPath, keyPath string) {
+	if certPath != "" && keyPath != "" {
+		log.Fatal(http.ListenAndServeTLS(addr, certPath, keyPath, router))
+	} else {
+		log.Fatal(http.ListenAndServe(addr, router))
+	}
+}
 
 func main() {
 	r := gin.Default()
@@ -43,7 +61,7 @@ func main() {
 		}
 
 		response := gin.H{
-			"cpu_percent": cpuPercent[0],
+			"cpu": cpuPercent[0],
 			"memory": gin.H{
 				"total":     memInfo.Total,
 				"used":      memInfo.Used,
@@ -77,7 +95,12 @@ func main() {
 		c.JSON(http.StatusOK, response)
 	})
 
-	if err := r.Run(":3000"); err != nil {
-		log.Fatal(err)
+	// Check if SSL files exist
+	sslCertPath, sslKeyPath := getSSLCertPaths("/etc/influx-agent/certs/", "./certs/")
+	if sslCertPath == "" || sslKeyPath == "" {
+		log.Println("SSL files not found. Using HTTP.")
 	}
+
+	// Start the server (HTTP or HTTPS)
+	startServer(":3000", r, sslCertPath, sslKeyPath)
 }
