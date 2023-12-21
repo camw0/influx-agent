@@ -31,9 +31,11 @@ func startServer(addr string, router http.Handler, certPath, keyPath string) {
 }
 
 func main() {
+	log.Println("starting webserver")
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
+		log.Println("serving request at root")
 		startTime := time.Now()
 
 		cpuPercent, err := cpu.Percent(0, false)
@@ -98,9 +100,13 @@ func main() {
 	// Check if SSL files exist
 	sslCertPath, sslKeyPath := getSSLCertPaths("/etc/influx-agent/certs/", "./certs/")
 	if sslCertPath == "" || sslKeyPath == "" {
-		log.Println("SSL files not found. Using HTTP.")
+		log.Println("using http (ssl certs do not exist)")
+	} else {
+		log.Println("using https (certs found at path)")
 	}
 
 	// Start the server (HTTP or HTTPS)
 	startServer(":3000", r, sslCertPath, sslKeyPath)
+
+	log.Println("started - listening on port 3000 for requests")
 }
