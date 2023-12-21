@@ -24,13 +24,13 @@ jobs:
           CGO_ENABLED: 0
           REF: ${{ github.ref }}
         run: |
-          GOOS=linux GOARCH=amd64 go build -o influx_linux_amd64 main.go
+          GOOS=linux GOARCH=amd64 go build -o dist/influx_linux_amd64 main.go
           chmod 755 dist/influx_linux_amd64
-          GOOS=linux GOARCH=arm64 go build -o influx_linux_arm64 main.go
+          GOOS=linux GOARCH=arm64 go build -o dist/influx_linux_arm64 main.go
           chmod 755 dist/influx_linux_arm64
-          GOOS=windows GOARCH=amd64 go build -o influx_windows_amd64 main.go
+          GOOS=windows GOARCH=amd64 go build -o dist/influx_windows_amd64 main.go
           chmod 755 dist/influx_windows_amd64
-          GOOS=windows GOARCH=arm64 go build -o influx_windows_arm64 main.go
+          GOOS=windows GOARCH=arm64 go build -o dist/influx_windows_arm64 main.go
           chmod 755 dist/influx_windows_arm64
 
       - name: Create checksum
