@@ -5,10 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// SetupCORS sets up CORS middleware for the Gin router
-func SetupCORS(r *gin.Engine, remote string) {
-	// CORS middleware configuration
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins = []string{remote}
-	r.Use(cors.New(corsConfig))
+// SetupCORS sets up CORS middleware
+func SetupCORS(r *gin.Engine, remoteAddr string) {
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{remoteAddr}
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type"}
+	r.Use(cors.New(config))
 }

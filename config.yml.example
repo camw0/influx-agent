@@ -1,0 +1,5 @@
+# config.yml
+
+listenAddr: ":3000"   # Example: ":3000" for listening on all available network interfaces
+remoteAddr: "https://influx.cameronwhite.co.uk"
+certDir: "/etc/letsencrypt/live/venus.cxmpute.com/"  # Adjust this path based on your SSL certificate location

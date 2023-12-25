@@ -1,33 +1,36 @@
 package main
 
 import (
-	"encoding/json"
+	"io/ioutil"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Config represents the configuration structure
 type Config struct {
-	ServerAddr string `json:"server_addr"`
-	CertDir    string `json:"cert_dir"`
-	RemoteAddr string `json:"remote_addr"`
-	// Add other configuration fields as needed
+	ListenAddr string `yaml:"listenAddr"`
+	RemoteAddr string `yaml:"remoteAddr"`
+	CertDir    string `yaml:"certDir"`
 }
 
-// ReadConfig reads a JSON config file and returns a Config struct
-func ReadConfig(filePath string) (Config, error) {
+// ReadConfig reads the configuration from the specified path
+func ReadConfig() (*Config, error) {
+	configPath := "/etc/influx/config.yml"
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		configPath = "./config.yml" // fallback to local config file on Windows
+	}
+
+	data, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		return nil, err
+	}
+
 	var config Config
-
-	file, err := os.Open(filePath)
+	err = yaml.Unmarshal(data, &config)
 	if err != nil {
-		return config, err
-	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&config)
-	if err != nil {
-		return config, err
+		return nil, err
 	}
 
-	return config, nil
+	return &config, nil
 }
