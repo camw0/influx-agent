@@ -13,17 +13,8 @@ func main() {
 	}
 
 	r := setupRouter(config)
-	sslCertPath, sslKeyPath := getSSLCertPaths(config.CertDir, "./certs/")
 
-	if sslCertPath == "" || sslKeyPath == "" {
-		log.Println("Using HTTP (SSL certs do not exist)")
-	} else {
-		log.Println("Using HTTPS (certs found at path)")
-	}
-
-	SetupCORS(r, config.RemoteAddr)
-
-	startServer(config.ListenAddr, r, sslCertPath, sslKeyPath)
+	startServer(config.ListenAddr, r)
 
 	log.Printf("Started - Listening on %s for requests\n", config.ListenAddr)
 }

@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
@@ -16,9 +18,33 @@ import (
 func setupRouter(config *Config) *gin.Engine {
 	r := gin.Default()
 
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:  []string{"http://localhost"},
+		AllowMethods:  []string{"GET"},
+		AllowHeaders:  []string{"Origin"},
+		ExposeHeaders: []string{"Content-Length"},
+		MaxAge:        12 * time.Hour,
+	}))
+
 	r.GET("/", func(c *gin.Context) {
-		log.Println("Serving request at root")
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
+
+		uuid := uuid.New()
 		startTime := time.Now()
+
+		cpuInfo, err := cpu.Info()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get CPU info"})
+			return
+		}
+
+		cpuTimes, err := cpu.Times(true)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get CPU times"})
+			return
+		}
 
 		cpuPercent, err := cpu.Percent(0, false)
 		if err != nil {
@@ -45,7 +71,13 @@ func setupRouter(config *Config) *gin.Engine {
 		}
 
 		response := gin.H{
-			"cpu": cpuPercent[0],
+			"version": "v2.0.0",
+			"uuid":    uuid,
+			"cpu": gin.H{
+				"percent": cpuPercent[0],
+				"times":   cpuTimes,
+				"info":    cpuInfo,
+			},
 			"memory": gin.H{
 				"total":     memInfo.Total,
 				"used":      memInfo.Used,
@@ -83,10 +115,6 @@ func setupRouter(config *Config) *gin.Engine {
 }
 
 // startServer starts the HTTP server
-func startServer(addr string, r *gin.Engine, certPath, keyPath string) {
-	if certPath != "" && keyPath != "" {
-		log.Fatal(http.ListenAndServeTLS(addr, certPath, keyPath, r))
-	} else {
-		log.Fatal(http.ListenAndServe(addr, r))
-	}
+func startServer(addr string, r *gin.Engine) {
+	log.Fatal(http.ListenAndServe(addr, r))
 }
