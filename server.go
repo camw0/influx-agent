@@ -71,7 +71,7 @@ func setupRouter(config *Config) *gin.Engine {
 		}
 
 		response := gin.H{
-			"version": "v2.0.0",
+			"version": "v1.1.0",
 			"uuid":    uuid,
 			"cpu": gin.H{
 				"percent": cpuPercent[0],
