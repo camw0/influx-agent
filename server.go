@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
 )
@@ -33,6 +34,12 @@ func setupRouter(config *Config) *gin.Engine {
 
 		uuid := uuid.New()
 		startTime := time.Now()
+
+		sysInfo, err := host.Info()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get system info"})
+			return
+		}
 
 		cpuInfo, err := cpu.Info()
 		if err != nil {
@@ -73,29 +80,23 @@ func setupRouter(config *Config) *gin.Engine {
 		response := gin.H{
 			"version": "v1.1.0",
 			"uuid":    uuid,
+			"sysinfo": sysInfo,
 			"cpu": gin.H{
 				"percent": cpuPercent[0],
 				"times":   cpuTimes,
 				"info":    cpuInfo,
 			},
 			"memory": gin.H{
-				"total":     memInfo.Total,
-				"used":      memInfo.Used,
-				"free":      memInfo.Free,
-				"percent":   memInfo.UsedPercent,
-				"cached":    memInfo.Cached,
-				"buffered":  memInfo.Buffers,
-				"available": memInfo.Available,
+				"total":   memInfo.Total,
+				"used":    memInfo.Used,
+				"free":    memInfo.Free,
+				"percent": memInfo.UsedPercent,
 			},
 			"disk": gin.H{
-				"total":          diskInfo.Total,
-				"used":           diskInfo.Used,
-				"free":           diskInfo.Free,
-				"percent":        diskInfo.UsedPercent,
-				"inodes_total":   diskInfo.InodesTotal,
-				"inodes_used":    diskInfo.InodesUsed,
-				"inodes_free":    diskInfo.InodesFree,
-				"inodes_percent": diskInfo.InodesUsedPercent,
+				"total":   diskInfo.Total,
+				"used":    diskInfo.Used,
+				"free":    diskInfo.Free,
+				"percent": diskInfo.UsedPercent,
 			},
 			"network": gin.H{
 				"sent":         netInfo[0].BytesSent,
