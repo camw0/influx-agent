@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/shirou/gopsutil/cpu"
@@ -19,19 +18,7 @@ import (
 func setupRouter(config *Config) *gin.Engine {
 	r := gin.Default()
 
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:  []string{"http://localhost"},
-		AllowMethods:  []string{"GET"},
-		AllowHeaders:  []string{"Origin"},
-		ExposeHeaders: []string{"Content-Length"},
-		MaxAge:        12 * time.Hour,
-	}))
-
 	r.GET("/", func(c *gin.Context) {
-
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
-
 		uuid := uuid.New()
 		startTime := time.Now()
 
