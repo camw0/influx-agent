@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Influx: Running updater in 3s";
+sleep 3;
+
+systemctl stop influx;
+curl -L -o /usr/local/bin/influx "https://github.com/cmrxnn/influx-agent/releases/latest/download/influx_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")";
+
+chmod u+x /usr/local/bin/influx;
+
+systemctl restart --now influx;
+
+echo "Influx: Update completed, checking systemctl process...";
+
+systemctl status influx;

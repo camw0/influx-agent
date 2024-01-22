@@ -4,7 +4,7 @@ echo "WARNING: Influx operates on port 3000 by default. If you need to change th
 echo "Influx: Running installer in 3s";
 sleep 3;
 
-sudo apt -y install curl;
+apt -y install curl;
 
 mkdir -p /etc/influx;
 curl -L -o /etc/influx/config.yml "https://raw.githubusercontent.com/cmrxnn/influx-agent/develop/config.yml.example"
@@ -13,7 +13,7 @@ curl -L -o /usr/local/bin/influx "https://github.com/cmrxnn/influx-agent/release
 
 chmod u+x /usr/local/bin/influx;
 
-sudo echo "[Unit]
+echo "[Unit]
 Description=InfluxAgent
 After=network.target
 
