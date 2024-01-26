@@ -65,7 +65,7 @@ func setupRouter(config *Config) *gin.Engine {
 		}
 
 		response := gin.H{
-			"version": "v1.1.0",
+			"version": "v1.1.2",
 			"uuid":    uuid,
 			"sysinfo": sysInfo,
 			"cpu": gin.H{
